@@ -17,8 +17,7 @@ class GroupSeeder extends Seeder
     public function run()
     {
         DB::table('students')->insert([
-          'id' => Str::random(10)+Str(rand(161,173)),
-          'name' => Str::random(10)
+          'id' => Str::random(4)+Str(rand(161,173)),
         ]);
     }
 }

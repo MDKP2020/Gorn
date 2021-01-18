@@ -16,6 +16,8 @@ class CreateStudentsTable extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('group_id');
+            $table->foreign('group_id')->references('id')->on('groups');
         });
     }
 

@@ -14,9 +14,8 @@ class CreateGroupsTable extends Migration
   public function up()
   {
     Schema::create('groups', function (Blueprint $table) {
-      $table->string('id');
-      $table->foreignId('student_id');
-      $table->foreign('student_id')->references('id')->on('students');
+      $table->id();
+      $table->string('name');
     });
   }
 
