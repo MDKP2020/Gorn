@@ -7,36 +7,9 @@ new Vue({
       group: {
         value: '',
         label: 'Выберите группу',
-        students: []
+        students: [],
       },
-      groups: [
-        // {
-        //   label: 'ПрИн-466',
-        //   students: [
-        //     { 
-        //       id: 1,
-        //       name: 'пупа из 466',
-        //     },
-        //     { 
-        //       id: 2,
-        //       name: 'лупа из 466',
-        //     },
-        //   ]
-        // },
-        // {
-        //   label: 'ПрИн-467',
-          // students: [
-          //   { 
-          //     id: 1,
-          //     name: 'пупа из 467',
-          //   },
-          //   { 
-          //     id: 2,
-          //     name: 'лупа из 467',
-          //   },
-          // ]
-        // }
-      ],
+      groups: [],
       groupColumns: [
         {
           name: 'name',
@@ -49,11 +22,57 @@ new Vue({
           field: 'id'
         }
       ],
+      move: false,
+      moveGroup:'',
       selectedStudents: [],
+      tablePagination: {
+        rowsPerPage: 15
+      }
     }
   },
   methods: {
-
+    deleteStudents: function() {
+      axios.post('students/delete', {
+        'student_ids': this.selectedStudents
+      })
+      .then(ans => {
+        if(ans.status !== 200)
+          this.$q.notify({
+            message:
+              'Возникла ошибка на стороне сервера',
+            position: 'top',
+            textColor: 'white'
+          });
+        else {
+          for(let i = 0; i < this.group.students.length; i++) {
+            for(let j = 0; j < this.selectedStudents.length; j++){
+              if(this.selectedStudents[j].id === this.group.students[i].id){
+                this.$delete(this.group.students[i], 'timelines');
+              }
+            }
+          }
+          console.log(this.group.students);
+          this.selectedStudents = [];
+        }
+      })
+    },
+    upgradeStudents: function() {
+      axios.post('students/upgrade', {
+        'student_ids': this.selectedStudents
+      })
+      .then(ans => {
+        if(ans.status !== 200)
+          this.$q.notify({
+            message:
+              'Возникла ошибка на стороне сервера',
+            position: 'top',
+            textColor: 'white'
+          });
+        else {
+          this.selectedStudents = [];
+        }
+      })
+    }
   },
   mounted() {
     axios.get('groups/get')
@@ -62,9 +81,17 @@ new Vue({
       for(let i = 0; i < this.groups.length; i++){
         this.groups[i].label = this.groups[i].name;
         this.groups[i].value = this.groups[i].name;
-        axios.get('students/get')
+        axios.get('students/get/'+this.groups[i].id)
         .then(ans => {
-          this.groups[i].students = ans.data;
+          if(ans.status === 200)
+            this.groups[i].students = ans.data;
+          else
+            this.$q.notify({
+              message:
+                'Возникла ошибка на стороне сервера',
+              position: 'top',
+              textColor: 'white'
+            });
         })
       }
     });
