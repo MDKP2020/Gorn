@@ -83,14 +83,12 @@
                   <q-btn flat round dense icon="close" v-close-popup />
             </q-toolbar>
             <q-card-section>
-              <q-input
-                :rules="[val => !!val,
-                val => !isNaN(val)]"
-                lazy-rules
-                label="Название группы"
-                v-model="moveGroup" 
-              >
-              </q-input>
+              <q-select
+                standout
+                rounded
+                v-model="moveGroup"
+                :options="groups"
+              />
             </q-card-section>
             <q-card-actions>
               <q-btn

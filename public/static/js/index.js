@@ -23,7 +23,11 @@ new Vue({
         }
       ],
       move: false,
-      moveGroup:'',
+      moveGroup: {
+        value: '',
+        label: 'Выберите группу',
+        students: [],
+      },
       selectedStudents: [],
       tablePagination: {
         rowsPerPage: 15
@@ -44,14 +48,15 @@ new Vue({
             textColor: 'white'
           });
         else {
-          for(let i = 0; i < this.group.students.length; i++) {
-            for(let j = 0; j < this.selectedStudents.length; j++){
+          console.log(this.selectedStudents)
+          for(let j = 0; j < this.selectedStudents.length; j++){
+            for(let i = 0; i < this.group.students.length; i++) {
               if(this.selectedStudents[j].id === this.group.students[i].id){
-                this.$delete(this.group.students[i], 'timelines');
+                this.group.students = [ ...this.group.students.slice(0, i), ...this.group.students.slice(i + 1) ]
+                break;
               }
             }
           }
-          console.log(this.group.students);
           this.selectedStudents = [];
         }
       })

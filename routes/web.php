@@ -34,11 +34,6 @@ Route::post('students/upgrade', function(Request $request) {
   $student_ids = $request['student_ids'];
   foreach($student_ids as $student_id){
     $tmp_student = DB::table('students')->where('id', $student_id)->first();
-    // if (substr($tmp_student['group_id'], 0, strspn($tmp_student['group_id'], "0123456789")) != 4) {
-    DB::table('students')
-      ->where('id', $student_id)
-      ->update(['group_id' => $tmp_student['group_id']+3]);
-    // }
   }
 });
 
