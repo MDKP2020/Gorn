@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
+
+use App\Models\Group;
+use App\Models\Student;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +19,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index');
+});
+
+Route::get('groups/get', function() {
+  return Group::all();
 });
