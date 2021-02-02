@@ -48,7 +48,6 @@ new Vue({
             textColor: 'white'
           });
         else {
-          console.log(this.selectedStudents)
           for(let j = 0; j < this.selectedStudents.length; j++){
             for(let i = 0; i < this.group.students.length; i++) {
               if(this.selectedStudents[j].id === this.group.students[i].id){
@@ -58,6 +57,24 @@ new Vue({
             }
           }
           this.selectedStudents = [];
+        }
+      })
+    },
+    moveStudents: function() {
+      axios.post('students/move', {
+        'student_ids': this.selectedStudents,
+        'group_id': this.moveGroup.id
+      })
+      .then(ans => {
+        if(ans.status !== 200)
+          this.$q.notify({
+            message:
+              'Возникла ошибка на стороне сервера',
+            position: 'top',
+            textColor: 'white'
+          });
+        else {
+          windows.location.reload();
         }
       })
     },
@@ -74,7 +91,7 @@ new Vue({
             textColor: 'white'
           });
         else {
-          this.selectedStudents = [];
+          windows.location.reload();
         }
       })
     }
@@ -85,7 +102,7 @@ new Vue({
       this.groups = ans.data;
       for(let i = 0; i < this.groups.length; i++){
         this.groups[i].label = this.groups[i].name;
-        this.groups[i].value = this.groups[i].name;
+        this.groups[i].id = this.groups[i].id;
         axios.get('students/get/'+this.groups[i].id)
         .then(ans => {
           if(ans.status === 200)

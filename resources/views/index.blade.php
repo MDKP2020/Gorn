@@ -98,7 +98,7 @@
                 Отмена
               </q-btn>
               <q-btn 
-                @click="" 
+                @click="moveStudents;move=false" 
                 color="black" 
               >
                 Перевести

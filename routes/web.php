@@ -31,9 +31,25 @@ Route::get('students/get/{id}', function($id) {
 });
 
 Route::post('students/upgrade', function(Request $request) {
+  die('da fuk');
   $student_ids = $request['student_ids'];
   foreach($student_ids as $student_id){
     $tmp_student = DB::table('students')->where('id', $student_id)->first();
+    dump($tmp_student);
+    dd('da fuk');
+    $tmp_student['group_id'] += 3;
+  }
+});
+
+Route::post('students/move', function(Request $request) {
+  die('da fuk');
+  $student_ids = $request['student_ids'];
+  $group_id = $request['group_id'];
+  foreach($student_ids as $student_id){
+    $tmp_student = DB::table('students')->where('id', $student_id)->first();
+    dump($tmp_student);
+    dd('da fuk');
+    $tmp_student['group_id'] += 3;
   }
 });
 
