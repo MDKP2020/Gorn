@@ -31,25 +31,29 @@ Route::get('students/get/{id}', function($id) {
 });
 
 Route::post('students/upgrade', function(Request $request) {
-  die('da fuk');
   $student_ids = $request['student_ids'];
+  $old_group_id = $request['group_id'];
+  $old_group = DB::table('groups')
+    ->where('id', $old_group_id)
+    ->first();
+  $new_group_id = DB::table('groups')
+    ->where('year', $old_group->year+1)
+    ->where('direction', $old_group->direction)
+    ->first()->id;
   foreach($student_ids as $student_id){
-    $tmp_student = DB::table('students')->where('id', $student_id)->first();
-    dump($tmp_student);
-    dd('da fuk');
-    $tmp_student['group_id'] += 3;
+    DB::table('students')
+      ->where('id', $student_id)
+      ->update(['group_id' => $new_group_id]);
   }
 });
 
 Route::post('students/move', function(Request $request) {
-  die('da fuk');
   $student_ids = $request['student_ids'];
   $group_id = $request['group_id'];
   foreach($student_ids as $student_id){
-    $tmp_student = DB::table('students')->where('id', $student_id)->first();
-    dump($tmp_student);
-    dd('da fuk');
-    $tmp_student['group_id'] += 3;
+    DB::table('students')
+      ->where('id', $student_id)
+      ->update(['group_id' => $group_id]);
   }
 });
 

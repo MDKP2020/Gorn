@@ -20,4 +20,19 @@ class Group extends Model
   public function group(){
     return $this->morphMany(Student::class, 'group');
   }
+
+  public function getAllAttributes()
+{
+    $columns = $this->getFillable();
+    $attributes = $this->getAttributes();
+
+    foreach ($columns as $column)
+    {
+        if (!array_key_exists($column, $attributes))
+        {
+            $attributes[$column] = null;
+        }
+    }
+    return $attributes;
+}
 }
